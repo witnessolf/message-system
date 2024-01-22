@@ -14,6 +14,7 @@ public class ProcessTemplate {
     public List<BusinessProcess> getProcessList() {
         return processList;
     }
+
     public void setProcessList(List<BusinessProcess> processList) {
         this.processList = processList;
     }
