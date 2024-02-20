@@ -6,6 +6,7 @@ import com.web.exception.ProcessException;
 import com.web.vo.BasicResultVO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 @Data
 @Slf4j
+@Controller
 public class ProcessController {
 
     /**
