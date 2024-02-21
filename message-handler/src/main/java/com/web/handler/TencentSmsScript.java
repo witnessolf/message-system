@@ -1,4 +1,4 @@
-package com.web;
+package com.web.handler;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;

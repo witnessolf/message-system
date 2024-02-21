@@ -1,4 +1,4 @@
-package com.utils;
+package com.web.utils;
 
 import com.web.domain.TaskInfo;
 import com.web.enums.ChannelType;

@@ -1,6 +1,6 @@
-package com.receiver.kafka;
+package com.web.receiver.kafka;
 
-import com.utils.GroupIdMappingUtils;
+import com.web.utils.GroupIdMappingUtils;
 import com.web.constant.MessageQueuePipeline;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Header;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListenerAnnotationBeanPostProcessor;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

@@ -1,13 +1,14 @@
-package com.receiver.kafka;
+package com.web.receiver.kafka;
 
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson.JSON;
-import com.utils.GroupIdMappingUtils;
+import com.web.service.ConsumeService;
+import com.web.utils.GroupIdMappingUtils;
 import com.web.constant.MessageQueuePipeline;
 import com.web.domain.TaskInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.checkerframework.checker.units.qual.K;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
@@ -30,6 +31,9 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "austin.mq.pipeline", havingValue = MessageQueuePipeline.KAFKA)
 public class Receiver {
 
+    @Autowired
+    private ConsumeService consumeService;
+
     @KafkaListener(topics = "#{'austin.mq.topic}'", containerFactory = "filterContainerFactory")
     public void consumer(ConsumerRecord<?, String> consumerRecord, @Header(KafkaHeaders.GROUP_ID) String topicGroupId) {
         // 1.判断ConsumerRecord是否为空
@@ -42,7 +46,7 @@ public class Receiver {
             // 4.每个消费者组 只消费 他们自身关心的消息
             if (messageGroupId.equals(topicGroupId)) {
                 log.info("groupId:{},params:{}", messageGroupId, JSON.toJSONString(taskInfos));
-
+                consumeService.consume2Send(taskInfos);
             }
         }
     }
