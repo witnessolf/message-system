@@ -9,6 +9,7 @@ import com.web.enums.BusinessCode;
 import com.web.enums.BusinessEnum;
 import com.web.enums.RespStatusEnum;
 import com.web.mq.SendMqService;
+import com.web.mq.kafka.KafkaSendMqServiceImpl;
 import com.web.pipline.BusinessProcess;
 import com.web.pipline.ProcessContext;
 import com.web.service.SendService;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class SendMqAction implements BusinessProcess<SendTaskModel> {
 
     @Autowired
-    private SendMqService sendMqService;
+    private KafkaSendMqServiceImpl sendMqService;
 
     @Value("${austin.business.topic.name}")
     private String sendMessageTopic;

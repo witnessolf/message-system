@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Data
 @Slf4j
-@Controller
+
 public class ProcessController {
 
     /**

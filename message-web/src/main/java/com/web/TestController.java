@@ -2,10 +2,16 @@ package com.web;
 
 import com.alibaba.fastjson.JSON;
 import com.web.dao.MessageTemplateDao;
+import com.web.domain.MessageParam;
 import com.web.domain.MessageTemplate;
+import com.web.domain.SendRequest;
+import com.web.domain.SendResponse;
+import com.web.enums.BusinessCode;
+import com.web.service.SendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +28,10 @@ public class TestController {
 
     @Autowired
     private MessageTemplateDao messageTemplateDao;
+    @Autowired
+    private SendService sendService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping("/test")
     private String test() {
@@ -35,5 +45,20 @@ public class TestController {
         List<MessageTemplate> list = messageTemplateDao.findAllByIsDeletedEquals(0, PageRequest.of(0, 10));
         return JSON.toJSONString(list);
     }
+    @RequestMapping("/redis")
+    private String testRedis() {
+        stringRedisTemplate.opsForValue().set("java3y", "austin");
+        return stringRedisTemplate.opsForValue().get("java3y");
+    }
 
+    @RequestMapping("/send")
+    private String testSend() {
+        SendRequest sendRequest = SendRequest.builder()
+                .code(BusinessCode.COMMON_SEND.getCode())
+                .messageTemplateId(1L)
+                .messageParam(MessageParam.builder().receiver("15013608309").build()).build();
+        SendResponse response = sendService.send(sendRequest);
+        return JSON.toJSONString(response);
+
+    }
 }

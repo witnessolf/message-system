@@ -54,6 +54,7 @@ public class PipelineConfig {
      *
      * @return
      */
+    @Bean
     public ProcessController processController() {
         ProcessController processController = new ProcessController();
         Map<String, ProcessTemplate> templateConfig = new HashMap<>(4);

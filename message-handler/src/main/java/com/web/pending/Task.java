@@ -1,9 +1,12 @@
 package com.web.pending;
 
+import cn.hutool.core.collection.CollUtil;
+import com.web.deduplication.DeduplicationRuleService;
 import com.web.domain.TaskInfo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
@@ -29,9 +32,15 @@ public class Task implements Runnable{
 
     private TaskInfo taskInfo;
 
+    @Autowired
+    private DeduplicationRuleService deduplicationRuleService;
+
     @Override
     public void run() {
         log.info("task:" + Thread.currentThread().getName());
 
+        if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {
+            deduplicationRuleService.duplication(taskInfo);
+        }
     }
 }
