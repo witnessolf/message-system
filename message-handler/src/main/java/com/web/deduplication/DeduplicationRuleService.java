@@ -1,7 +1,9 @@
 package com.web.deduplication;
 
+import com.web.constant.CommonConstant;
 import com.web.domain.TaskInfo;
 import com.web.enums.DeduplicationType;
+import com.web.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,13 @@ public class DeduplicationRuleService {
 
     @Autowired
     private DeduplicationHolder deduplicationHolder;
+    @Autowired
+    private ConfigService config;
 
     public void duplication(TaskInfo taskInfo) {
         // 配置样例：{"deduplication_10":{"num":1,"time":300},"deduplication_20":{"num":5}}
-        //String deduplicationConfig = config.getProperty(DEDUPLICATION_RULE_KEY, CommonConstant.EMPTY_JSON_OBJECT);
-        String deduplicationConfig = "{\"deduplication_10\":{\"num\":1,\"time\":300},\"deduplication_20\":{\"num\":5}}";
+        String deduplicationConfig = config.getProperty(DEDUPLICATION_RULE_KEY, CommonConstant.EMPTY_JSON_OBJECT);
+        // String deduplicationConfig = "{\"deduplication_10\":{\"num\":1,\"time\":300},\"deduplication_20\":{\"num\":5}}";
 
         List<Integer> deduplicationList = DeduplicationType.getDeduplicationList();
         for (Integer deduplicationType : deduplicationList) {

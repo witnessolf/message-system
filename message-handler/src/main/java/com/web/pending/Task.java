@@ -2,6 +2,7 @@ package com.web.pending;
 
 import cn.hutool.core.collection.CollUtil;
 import com.web.deduplication.DeduplicationRuleService;
+import com.web.deduplication.discard.DiscardMessageService;
 import com.web.domain.TaskInfo;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -34,10 +35,17 @@ public class Task implements Runnable{
 
     @Autowired
     private DeduplicationRuleService deduplicationRuleService;
+    @Autowired
+    private DiscardMessageService discardMessageService;
 
     @Override
     public void run() {
         log.info("task:" + Thread.currentThread().getName());
+
+        // 0. 丢弃消息
+        if (discardMessageService.isDiscard(taskInfo)) {
+            return;
+        }
 
         if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {
             deduplicationRuleService.duplication(taskInfo);
