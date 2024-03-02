@@ -56,7 +56,7 @@ public class TestController {
         SendRequest sendRequest = SendRequest.builder()
                 .code(BusinessCode.COMMON_SEND.getCode())
                 .messageTemplateId(1L)
-                .messageParam(MessageParam.builder().receiver("15013608309").build()).build();
+                .messageParam(MessageParam.builder().receiver("1713157566@qq.com").build()).build();
         SendResponse response = sendService.send(sendRequest);
         return JSON.toJSONString(response);
 

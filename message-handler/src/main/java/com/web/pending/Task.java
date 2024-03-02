@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.web.deduplication.DeduplicationRuleService;
 import com.web.deduplication.discard.DiscardMessageService;
 import com.web.domain.TaskInfo;
+import com.web.handler.Handler;
+import com.web.handler.HandlerHolder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,8 @@ public class Task implements Runnable{
     private TaskInfo taskInfo;
 
     @Autowired
+    private HandlerHolder handlerHolder;
+    @Autowired
     private DeduplicationRuleService deduplicationRuleService;
     @Autowired
     private DiscardMessageService discardMessageService;
@@ -47,8 +51,14 @@ public class Task implements Runnable{
             return;
         }
 
+        // 2. 平台去重
         if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {
             deduplicationRuleService.duplication(taskInfo);
+        }
+
+        // 3. 真正发送消息
+        if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {
+            handlerHolder.route(taskInfo.getSendChannel()).doHandler(taskInfo);
         }
     }
 }

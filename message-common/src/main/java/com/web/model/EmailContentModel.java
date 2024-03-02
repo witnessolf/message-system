@@ -27,5 +27,9 @@ public class EmailContentModel extends ContentModel {
      */
     private String content;
 
+    /**
+     * 邮件附件链接
+     */
+    private String url;
 
 }
