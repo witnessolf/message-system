@@ -3,7 +3,9 @@ package com.web.deduplication.service;
 import com.web.deduplication.DeduplicationHolder;
 import com.web.deduplication.DeduplicationParam;
 import com.web.deduplication.limit.LimitService;
+import com.web.domain.AnchorInfo;
 import com.web.domain.TaskInfo;
+import com.web.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -23,6 +25,9 @@ public abstract class AbstractDeduplicationService implements DeduplicationServi
 
     @Autowired
     private DeduplicationHolder deduplicationHolder;
+
+    @Autowired
+    private LogUtil logUtil;
 
     @PostConstruct
     public void init() {
@@ -47,6 +52,7 @@ public abstract class AbstractDeduplicationService implements DeduplicationServi
         Set<String> limitSet = limitService.limitFilter(this, taskInfo, param);
         if (!CollectionUtils.isEmpty(limitSet)) {
             taskInfo.getReceiver().removeAll(limitSet);
+            logUtil.print(AnchorInfo.builder().businessId(taskInfo.getBusinessId()).ids(limitSet).state(param.getAnchorState().getCode()).build());
         }
     }
 }
