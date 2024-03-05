@@ -1,18 +1,20 @@
 package com.web.enums;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 /**
- * @Author 17131
- * @Date 2024/2/22
- * @Description:
+ * 打点信息枚举
+ *
+ * @author 3y
  */
 @Getter
 @ToString
 @AllArgsConstructor
 public enum AnchorState {
+
     /**
      * 消息接收成功（获取到请求）
      */

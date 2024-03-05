@@ -3,6 +3,7 @@ package com.web.dao;
 import com.web.domain.MessageTemplate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @Date 2024/1/8
  * @Description: 消息模板Dao
  */
-public interface MessageTemplateDao extends JpaRepository<MessageTemplate, Long> {
+public interface MessageTemplateDao extends JpaRepository<MessageTemplate, Long>, JpaSpecificationExecutor<MessageTemplate> {
 
 
     /**

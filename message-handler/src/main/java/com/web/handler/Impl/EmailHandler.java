@@ -58,7 +58,7 @@ public class EmailHandler extends AbstractHandler implements Handler {
         /**
          * 修改 user/from/pass
          */
-        String defaultConfig = "{\"host\":\"smtp.qq.com\",\"port\":465,\"user\":\"403686131@qq.com\",\"pass\":\"123123123\",\"from\":\"403686131@qq.com\",\"starttlsEnable\":\"true\",\"auth\":true,\"sslEnable\":true}";
+        String defaultConfig = "{\"host\":\"smtp.qq.com\",\"port\":465,\"user\":\"1713157566@qq.com\",\"pass\":\"deruupvqlevibjbi\",\"from\":\"1713157566@qq.com\",\"starttlsEnable\":\"true\",\"auth\":true,\"sslEnable\":true}";
         MailAccount account = JSON.parseObject(defaultConfig, MailAccount.class);
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();

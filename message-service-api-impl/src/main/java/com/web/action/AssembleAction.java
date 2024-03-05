@@ -6,6 +6,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.web.constant.AustinConstant;
+import com.web.constant.CommonConstant;
 import com.web.dao.MessageTemplateDao;
 import com.web.domain.MessageParam;
 import com.web.domain.MessageTemplate;
@@ -46,7 +47,7 @@ public class AssembleAction implements BusinessProcess<SendTaskModel> {
 
         // 根据messageTemplateId从数据库中获取信息模板
         Optional<MessageTemplate> messageTemplate = messageTemplateDao.findById(messageTemplateId);
-        if (!messageTemplate.isPresent() || messageTemplate.get().getIsDeleted().equals(AustinConstant.TRUE)) {
+        if (!messageTemplate.isPresent() || messageTemplate.get().getIsDeleted().equals(CommonConstant.TRUE)) {
             context.setNeedBreak(true).setResponse(BasicResultVO.fail(RespStatusEnum.TEMPLATE_NOT_FOUND));
             return;
         }

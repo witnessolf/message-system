@@ -1,6 +1,5 @@
 package com.web.constant;
 
-
 /**
  * @author 3y
  */
