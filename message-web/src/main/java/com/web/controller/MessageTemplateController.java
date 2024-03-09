@@ -12,9 +12,11 @@ import com.web.exception.CommonException;
 import com.web.service.MessageTemplateService;
 import com.web.service.SendService;
 import com.web.utils.Convert4Amis;
+import com.web.vo.BasicResultVO;
 import com.web.vo.MessageTemplateParam;
 import com.web.vo.MessageTemplateVo;
 import com.web.vo.amis.CommonAmisVo;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,5 +137,19 @@ public class MessageTemplateController {
     }
 
 
+    @PostMapping("start/{id}")
+    @ApiOperation("启动模板定时任务")
+    public BasicResultVO start(@RequestBody @PathVariable("id") Long id) {
+        BasicResultVO basicResultVO = messageTemplateService.startCronTask(id);
+        return basicResultVO;
+    }
 
+    /**
+     * 暂停模板的定时任务
+     */
+    @PostMapping("stop/{id}")
+    @ApiOperation("/暂停模板的定时任务")
+    public BasicResultVO stop(@RequestBody @PathVariable("id") Long id) {
+        return messageTemplateService.stopCronTask(id);
+    }
 }

@@ -9,19 +9,26 @@ import com.web.dao.MessageTemplateDao;
 import com.web.domain.MessageTemplate;
 import com.web.enums.AuditStatus;
 import com.web.enums.MessageStatus;
+import com.web.enums.RespStatusEnum;
+import com.web.enums.TemplateType;
 import com.web.service.MessageTemplateService;
 import com.web.vo.BasicResultVO;
 import com.web.vo.MessageTemplateParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import web.entity.XxlJobInfo;
+import web.service.CronTaskService;
+import web.utils.XxlJobUtil;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @Author 17131
@@ -33,6 +40,12 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
     @Autowired
     private MessageTemplateDao messageTemplateDao;
+
+    @Autowired
+    private CronTaskService cronTaskService;
+
+    @Autowired
+    private XxlJobUtil xxlJobUtil;
 
     @Override
     public Page<MessageTemplate> queryList(MessageTemplateParam param) {
@@ -122,16 +135,55 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
         if (Objects.nonNull(dbMsg) && Objects.nonNull(dbMsg.getCronTaskId())) {
             messageTemplate.setCronTaskId(dbMsg.getCronTaskId());
         }
+
+        // 如果存在定时任务,则更新任务信息
+        if (Objects.nonNull(messageTemplate.getCronTaskId()) && TemplateType.CLOCKING.getCode().equals(messageTemplate.getTemplateType())) {
+            XxlJobInfo xxlJobInfo = xxlJobUtil.buildXxlJobInfo(messageTemplate);
+            cronTaskService.saveCronTask(xxlJobInfo);
+            cronTaskService.stopCronTask(messageTemplate.getCronTaskId());
+        }
     }
 
 
     @Override
     public BasicResultVO startCronTask(Long id) {
-        return null;
+        // 1.获取消息模板的具体信息
+        MessageTemplate messageTemplate = messageTemplateDao.findById(id).orElse(null);
+        if (Objects.isNull(messageTemplate)) {
+            return BasicResultVO.fail();
+        }
+        // 2.动态创建或更新定时任务
+        XxlJobInfo xxlJobInfo = xxlJobUtil.buildXxlJobInfo(messageTemplate);
+
+        // 3.获取taskId(如果本身存在则复用原有任务，如果不存在则得到新建后任务ID)
+        Integer taskId = messageTemplate.getCronTaskId();
+        BasicResultVO basicResultVO = cronTaskService.saveCronTask(xxlJobInfo);
+        if (Objects.isNull(taskId) && RespStatusEnum.SUCCESS.getCode().equals(basicResultVO.getStatus())
+                && Objects.nonNull(basicResultVO.getData())) {
+            taskId = Integer.valueOf(String.valueOf(basicResultVO.getData()));
+        }
+
+        // 4.启动定时任务,并更新消息模板的状态
+        if (Objects.nonNull(taskId)) {
+            cronTaskService.startCronTask(taskId);
+            MessageTemplate copy = ObjectUtil.clone(messageTemplate).setMsgStatus(MessageStatus.RUN.getCode())
+                    .setCronTaskId(taskId).setUpdated(Math.toIntExact(DateUtil.currentSeconds()));
+            messageTemplateDao.save(copy);
+            return BasicResultVO.success();
+        }
+        return BasicResultVO.fail();
     }
 
     @Override
     public BasicResultVO stopCronTask(Long id) {
-        return null;
+        // 1.获取消息模板
+        MessageTemplate messageTemplate = messageTemplateDao.findById(id).orElse(null);
+        if (ObjectUtil.isNull(messageTemplate)) return BasicResultVO.fail();
+        // 2.更新消息模板状态
+        MessageTemplate copy = ObjectUtil.clone(messageTemplate).setMsgStatus(MessageStatus.STOP.getCode())
+                .setUpdated(Math.toIntExact(DateUtil.currentSeconds()));
+        messageTemplateDao.save(copy);
+        // 3.暂停定时任务
+        return cronTaskService.stopCronTask(copy.getCronTaskId());
     }
 }
