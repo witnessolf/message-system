@@ -1,4 +1,4 @@
-package com.web;
+package com.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.web.dao.MessageTemplateDao;
