@@ -14,21 +14,19 @@ import com.web.enums.TemplateType;
 import com.web.service.MessageTemplateService;
 import com.web.vo.BasicResultVO;
 import com.web.vo.MessageTemplateParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import web.entity.XxlJobInfo;
-import web.service.CronTaskService;
-import web.utils.XxlJobUtil;
+import web.xxl.entity.XxlJobInfo;
+import web.xxl.service.CronTaskService;
+import web.xxl.utils.XxlJobUtil;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @Author 17131

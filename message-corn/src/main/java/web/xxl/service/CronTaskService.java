@@ -1,8 +1,8 @@
-package web.service;
+package web.xxl.service;
 
 import com.web.vo.BasicResultVO;
-import web.entity.XxlJobGroup;
-import web.entity.XxlJobInfo;
+import web.xxl.entity.XxlJobGroup;
+import web.xxl.entity.XxlJobInfo;
 
 /**
  * @Author 17131

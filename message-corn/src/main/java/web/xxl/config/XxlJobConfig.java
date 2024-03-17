@@ -1,4 +1,4 @@
-package web.config;
+package web.xxl.config;
 
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.extern.slf4j.Slf4j;

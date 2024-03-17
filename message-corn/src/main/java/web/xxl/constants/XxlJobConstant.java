@@ -1,4 +1,4 @@
-package web.constants;
+package web.xxl.constants;
 
 
 /**

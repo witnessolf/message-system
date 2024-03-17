@@ -1,4 +1,4 @@
-package web.utils;
+package web.xxl.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,11 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import web.constants.XxlJobConstant;
-import web.entity.XxlJobGroup;
-import web.entity.XxlJobInfo;
+import web.xxl.constants.XxlJobConstant;
+import web.xxl.entity.XxlJobGroup;
+import web.xxl.entity.XxlJobInfo;
 import web.enums.*;
-import web.service.CronTaskService;
+import web.xxl.enums.*;
+import web.xxl.service.CronTaskService;
 
 import java.util.Date;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package web.service.impl;
+package web.xxl.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
@@ -12,10 +12,10 @@ import com.xxl.job.core.biz.model.ReturnT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import web.constants.XxlJobConstant;
-import web.entity.XxlJobGroup;
-import web.entity.XxlJobInfo;
-import web.service.CronTaskService;
+import web.xxl.constants.XxlJobConstant;
+import web.xxl.entity.XxlJobGroup;
+import web.xxl.entity.XxlJobInfo;
+import web.xxl.service.CronTaskService;
 
 import java.net.HttpCookie;
 import java.util.HashMap;
