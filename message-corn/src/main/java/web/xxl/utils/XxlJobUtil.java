@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import web.xxl.constants.XxlJobConstant;
 import web.xxl.entity.XxlJobGroup;
 import web.xxl.entity.XxlJobInfo;
-import web.enums.*;
 import web.xxl.enums.*;
 import web.xxl.service.CronTaskService;
 

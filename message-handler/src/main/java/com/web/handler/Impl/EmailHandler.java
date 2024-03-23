@@ -3,22 +3,21 @@ package com.web.handler.Impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
-import com.alibaba.fastjson.JSON;
 import com.google.common.base.Throwables;
 import com.sun.mail.util.MailSSLSocketFactory;
 import com.web.domain.MessageTemplate;
 import com.web.domain.TaskInfo;
 import com.web.handler.AbstractHandler;
 import com.web.handler.Handler;
-import com.web.handler.HandlerHolder;
-import com.web.model.EmailContentModel;
+import com.web.dto.model.EmailContentModel;
+import com.web.utils.AccountUtils;
 import com.web.utils.AustinFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Objects;
 
@@ -27,12 +26,15 @@ import java.util.Objects;
  * @Date 2024/3/2
  * @Description:
  */
-@Service
+@Component
 @Slf4j
 public class EmailHandler extends AbstractHandler implements Handler {
 
     @Value("${austin.business.upload.crowd.path}")
     private String dataPath;
+
+    @Autowired
+    private AccountUtils accountUtils;
 
     @Override
     public boolean handler(TaskInfo taskInfo) {
@@ -58,8 +60,9 @@ public class EmailHandler extends AbstractHandler implements Handler {
         /**
          * 修改 user/from/pass
          */
-        String defaultConfig = "{\"host\":\"smtp.qq.com\",\"port\":465,\"user\":\"1713157566@qq.com\",\"pass\":\"deruupvqlevibjbi\",\"from\":\"1713157566@qq.com\",\"starttlsEnable\":\"true\",\"auth\":true,\"sslEnable\":true}";
-        MailAccount account = JSON.parseObject(defaultConfig, MailAccount.class);
+//        String defaultConfig = "{\"host\":\"smtp.qq.com\",\"port\":465,\"user\":\"1713157566@qq.com\",\"pass\":\"deruupvqlevibjbi\",\"from\":\"1713157566@qq.com\",\"starttlsEnable\":\"true\",\"auth\":true,\"sslEnable\":true}";
+//        MailAccount account = JSON.parseObject(defaultConfig, MailAccount.class);
+        MailAccount account = accountUtils.getAccountById(sendAccount, MailAccount.class);
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();
             sf.setTrustAllHosts(true);

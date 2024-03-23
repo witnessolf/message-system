@@ -1,5 +1,4 @@
-package com.web.model;
-
+package com.web.dto.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,16 +7,29 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 3y
- *
- * 通知栏消息推送
+ * <p>
+ * <p>
+ * 邮件消息体
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PushContentModel extends ContentModel {
+public class EmailContentModel extends ContentModel {
 
+    /**
+     * 标题
+     */
     private String title;
+
+    /**
+     * 内容(可写入HTML)
+     */
     private String content;
+
+    /**
+     * 邮件附件链接
+     */
     private String url;
+
 }

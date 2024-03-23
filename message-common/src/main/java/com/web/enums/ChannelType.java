@@ -1,6 +1,6 @@
 package com.web.enums;
 
-import com.web.model.*;
+import com.web.dto.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;

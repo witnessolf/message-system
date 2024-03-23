@@ -1,6 +1,6 @@
 package com.web.domain;
 
-import com.web.model.ContentModel;
+import com.web.dto.model.ContentModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

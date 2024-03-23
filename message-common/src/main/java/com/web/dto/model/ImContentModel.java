@@ -1,4 +1,4 @@
-package com.web.model;
+package com.web.dto.model;
 
 /**
  * @author 3y
