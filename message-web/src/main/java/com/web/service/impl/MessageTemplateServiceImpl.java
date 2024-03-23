@@ -19,9 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import web.xxl.entity.XxlJobInfo;
-import web.xxl.service.CronTaskService;
-import web.xxl.utils.XxlJobUtil;
+import com.web.xxl.entity.XxlJobInfo;
+import com.web.xxl.service.CronTaskService;
+import com.web.xxl.utils.XxlJobUtil;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
