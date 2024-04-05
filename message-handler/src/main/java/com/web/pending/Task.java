@@ -4,17 +4,15 @@ import cn.hutool.core.collection.CollUtil;
 import com.web.deduplication.DeduplicationRuleService;
 import com.web.deduplication.discard.DiscardMessageService;
 import com.web.domain.TaskInfo;
-import com.web.handler.Handler;
 import com.web.handler.HandlerHolder;
+import com.web.handler.ShieldService;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @Author 17131
@@ -41,6 +39,8 @@ public class Task implements Runnable{
     private DeduplicationRuleService deduplicationRuleService;
     @Autowired
     private DiscardMessageService discardMessageService;
+    @Autowired
+    private ShieldService shieldService;
 
     @Override
     public void run() {
@@ -50,6 +50,9 @@ public class Task implements Runnable{
         if (discardMessageService.isDiscard(taskInfo)) {
             return;
         }
+
+        // 1. 屏蔽消息
+        shieldService.shield(taskInfo);
 
         // 2. 平台去重
         if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {
